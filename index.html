@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>4D Love</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Sacramento&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        background: linear-gradient(-45deg, #0a0a0a, #1a001a, #000010, #0a0a0a);
+        background-size: 400% 400%;
+        animation: bgShift 15s ease infinite;
+        perspective: 1000px;
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+      }
+
+      @keyframes bgShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      #container {
+        width: 100vw;
+        height: 100vh;
+        transform-style: preserve-3d;
+        will-change: transform;
+        position: relative;
+      }
+
+      .text {
+        position: absolute;
+        white-space: nowrap;
+        pointer-events: none;
+        font-size: 24px;
+        user-select: none;
+        animation: float 10s linear infinite, glowPulse 3s ease-in-out infinite;
+        background: linear-gradient(90deg, #ff4ecf, #fff200, #00fff7, #ff4ecf);
+        background-size: 600% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.3),
+          0 0 16px rgba(255, 0, 255, 0.4), 0 0 24px rgba(0, 255, 255, 0.3);
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(100vh) scale(0.5);
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-10vh) scale(1.4);
+          opacity: 0;
+        }
+      }
+
+      @keyframes glowPulse {
+        0% {
+          background-position: 0% 50%;
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+        50% {
+          background-position: 100% 50%;
+          text-shadow: 0 0 20px rgba(255, 255, 255, 0.7),
+            0 0 30px rgba(255, 0, 255, 0.6), 0 0 40px rgba(0, 255, 255, 0.6);
+        }
+        100% {
+          background-position: 0% 50%;
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+      }
+
+      .heart {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: pink;
+        transform: rotate(45deg);
+        animation: explode 1s ease-out forwards;
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: pink;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        top: -10px;
+        left: 0;
+      }
+
+      .heart::after {
+        left: -10px;
+        top: 0;
+      }
+
+      @keyframes explode {
+        0% {
+          transform: scale(1) rotate(45deg);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(2.5) rotate(45deg);
+          opacity: 0;
+        }
+      }
+
+      #musicBtn {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        z-index: 99;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        padding: 8px 14px;
+        color: white;
+        border-radius: 10px;
+        font-family: "Quicksand", sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <button id="musicBtn">🔊</button>
+    <audio id="bgm" loop autoplay>
+      <source src="https://files.catbox.moe/40mb25.mp3" type="audio/mpeg" />
+    </audio>
+
+    <script>
+      const messages = [
+        "Cảm ơn vì em đã đến 💖",
+        "Yêu em từ cái nhìn đầu tiên 💞",
+        "Anh sẽ luôn bên cạnh em 💝",
+        "Forever 💑",
+        "💘💘💘",
+        "Anh yêu em nhiều lắm 💗",
+        "Em là ánh sáng của cuộc đời anh 🌟",
+      ];
+
+      const fonts = ["'Great Vibes', cursive", "'Sacramento', cursive"];
+      const container = document.getElementById("container");
+
+      function createText() {
+        const span = document.createElement("span");
+        span.className = "text";
+        span.innerText = messages[Math.floor(Math.random() * messages.length)];
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.top = Math.random() * 100 + "vh";
+        span.style.fontFamily = fonts[Math.floor(Math.random() * fonts.length)];
+        span.style.fontSize = 22 + Math.random() * 8 + "px";
+        span.style.animationDuration = 5 + Math.random() * 5 + "s";
+        container.appendChild(span);
+        setTimeout(() => span.remove(), 12000);
+      }
+
+      setInterval(createText, 300);
+
+      // Chạm để tạo trái tim nổ
+      function createHeart(x, y) {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.style.left = x - 10 + "px";
+        heart.style.top = y - 10 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1000);
+      }
+
+      document.addEventListener("click", (e) =>
+        createHeart(e.clientX, e.clientY)
+      );
+      document.addEventListener("touchstart", (e) => {
+        if (e.touches.length > 0) {
+          createHeart(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      });
+
+      // Góc nhìn 3D
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ticking = false;
+
+      function updateTransform() {
+        const rotateX = (mouseY - window.innerHeight / 2) / 20;
+        const rotateY = (mouseX - window.innerWidth / 2) / 20;
+        const skewX = (mouseX - window.innerWidth / 2) / 100;
+        const skewY = (mouseY - window.innerHeight / 2) / 100;
+        container.style.transform = `
+          rotateX(${-rotateX}deg)
+          rotateY(${rotateY}deg)
+          skewX(${skewX}deg)
+          skewY(${skewY}deg)
+          scale(1.05)
+        `;
+        ticking = false;
+      }
+
+      function onPointerMove(x, y) {
+        mouseX = x;
+        mouseY = y;
+        if (!ticking) {
+          window.requestAnimationFrame(updateTransform);
+          ticking = true;
+        }
+      }
+
+      document.addEventListener("mousemove", (e) =>
+        onPointerMove(e.clientX, e.clientY)
+      );
+      document.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.touches.length > 0) {
+            onPointerMove(e.touches[0].clientX, e.touches[0].clientY);
+          }
+        },
+        { passive: true }
+      );
+
+      // Nhạc
+      const music = document.getElementById("bgm");
+      const musicBtn = document.getElementById("musicBtn");
+      music.volume = 0.5;
+
+      musicBtn.addEventListener("click", () => {
+        if (music.paused) {
+          music.play();
+          musicBtn.textContent = "🔊";
+        } else {
+          music.pause();
+          musicBtn.textContent = "🔇";
+        }
+      });
+    </script>
+  </body>
+</html>
